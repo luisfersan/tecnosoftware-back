@@ -49,7 +49,7 @@ En cosntrucción: menú Carrito, Mi Perfil y ajustes generales.
 La API de TecnoSoftware es una API RESTful que se utiliza para acceder a la base de datos de los emprendedores de Tecnología y Softawre, consulta información de pedidos, guardar sus dispositivos tecnológicos
 y de software favoritos en su cuenta.
 
-● #Autenticación:
+● **Autenticación:
 La API de TecnoSoftware utiliza tokens de API para autenticar los puntos de conexión protegidos. Puedes generar un token de forma gratuita.
 La autenticación en la API se realiza a través de la autenticación del portador. Al realizar una solicitud a un punto de conexión, debe enviar el token en el encabezado Authorization.
 Mantenga seguro su token de API. No compartas tu token en áreas de acceso público, como el código del lado del cliente, repositorios de código abierto, etc.
