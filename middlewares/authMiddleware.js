@@ -26,7 +26,20 @@ const checkCredentials = (req, res, next) => {
 // Middleware para reportar las consultas recibidas en el servidor
 const logRequest = (req, res, next) => {
   console.log(`Consulta recibida: ${req.method} ${req.url}`)
+  console.log(`Consulta recibida: ${req.method} ${req.url}`)
   next()
 }
 
-module.exports = { authenticateToken, checkCredentials, logRequest } // Exporto los middlewares
+const checkAdmin = (req, res, next) => {
+  if (!req.user || !req.user.admin) {
+    return res.status(403).json({
+      status: 'error',
+      code: 403,
+      message: 'Acceso denegado. Requiere permisos de administrador.',
+      data: null,
+    });
+  }
+  next();
+};
+
+module.exports = { authenticateToken, checkCredentials, logRequest, checkAdmin };

@@ -1,20 +1,18 @@
-const express = require('express') // Importo Express
-const { register, login, getUser } = require('../controllers/userController') // Importo controladores de usuario
-const {
-  authenticateToken,
-  checkCredentials,
-  logRequest,
-} = require('../middlewares/authMiddleware') // Importo middlewares
+const express = require('express');
+const { register, login, getUsers, getUser, updateUser, deleteUser, logout } = require('../controllers/userController');
+const { authenticateToken, checkCredentials, logRequest, checkAdmin } = require('../middlewares/authMiddleware');
 
-const router = express.Router()
+const router = express.Router();
 
-// Ruta para registrar usuario - verifico credenciales y registro en la base de datos
-router.post('/usuarios', logRequest, checkCredentials, register)
+// Rutas para autenticación
+router.post('/auth/register', logRequest, checkCredentials, register); // Crear usuario
+router.post('/auth/login', logRequest, checkCredentials, login);       // Iniciar sesión
+router.post('/auth/logout', logRequest, authenticateToken, logout);     // Cerrar sesión
 
-// Ruta para iniciar sesión - verifica credenciales y devuelve un token si son correctas
-router.post('/login', logRequest, checkCredentials, login)
+// Rutas de usuarios (admin)
+router.get('', logRequest, authenticateToken, getUsers);          // Obtener todos los usuarios
+router.get('/:id', logRequest, authenticateToken, checkAdmin, getUser);       // Obtener usuario por ID
+router.put('/:id', logRequest, authenticateToken, checkAdmin, updateUser);    // Modificar usuario por ID
+router.delete('/:id', logRequest, authenticateToken, checkAdmin, deleteUser); // Eliminar usuario por ID
 
-// Ruta para obtener datos de usuario - requiere autenticación con token
-router.get('/usuarios', logRequest, authenticateToken, getUser)
-
-module.exports = router // Exporto el enrutador
+module.exports = router;
