@@ -49,20 +49,20 @@ En cosntrucción: menú Carrito, Mi Perfil y ajustes generales.
 La API de TecnoSoftware es una API RESTful que se utiliza para acceder a la base de datos de los emprendedores de Tecnología y Softawre, consulta información de pedidos, guardar sus dispositivos tecnológicos
 y de software favoritos en su cuenta.
 
-● **Autenticación:
+● **Autenticación:**
 La API de TecnoSoftware utiliza tokens de API para autenticar los puntos de conexión protegidos. Puedes generar un token de forma gratuita.
 La autenticación en la API se realiza a través de la autenticación del portador. Al realizar una solicitud a un punto de conexión, debe enviar el token en el encabezado Authorization.
 Mantenga seguro su token de API. No compartas tu token en áreas de acceso público, como el código del lado del cliente, repositorios de código abierto, etc.
-● #URL Base:
+● **URL Base:**
 La URL base de todos los puntos de conexión de la API de TecnoSoftware es http://localhost:3000
 Por ejemplo, para obtener todos los productos a través de la API, la URL completa es una solicitud GET a http://localhost:3000
-● #Respuestas:
+● **Respuestas:**
 Todas las respuestas devueltas por la API de TecnoSoftware siguen la especificación JSON:API. Lea la referencia de los puntos de conexión de la API para ver ejemplos de respuestas exitosas.
-● #Errores:
+● **Errores:**
 La API TecnoSoftware utiliza códigos de estado HTTP comunes para indicar si una solicitud se ha realizado correctamente o si no un error. Los códigos de estado en el rango 2xx indican una respuesta correcta.
 Los códigos de estado en el rango 4xx indican Errores causados por su solicitud, como parámetros obligatorios no enviados. Los códigos de estado en el 5xx significan que algo salió mal con la aplicación TecnoSoftware.
 Lea la referencia de puntos de conexión de la API para ver ejemplos de respuestas correctas..
-● #HTTP Códigos de Estado:
+● **HTTP Códigos de Estado:**
 Estos son los códigos de estado HTTP comunes utilizados por la API de TecnoSoftware:
 200 (OK): Su solicitud se ha realizado correctamente.
 201 (Creado): Su solicitud se ha realizado correctamente y se ha creado un nuevo recurso para su cuenta.
@@ -72,11 +72,11 @@ Estos son los códigos de estado HTTP comunes utilizados por la API de TecnoSoft
 422 (entidad no procesable): la solicitud no se realizó correctamente porque no envió los parámetros necesarios para el punto de conexión.
 429 (Demasiadas solicitudes): tu solicitud no se ha realizado correctamente porque has accedido a la API de Airport Gap demasiadas veces en un corto periodo de tiempo.
 Consulte la sección Limitación de velocidad para obtener más información.
-● #Limitación de Velocidad:
+● **Limitación de Velocidad:**
 Puede realizar hasta 100 solicitudes por minuto a cualquier punto de conexión. Cualquier solicitud que exceda el límite de tasa recibirá una respuesta 429 Demasiadas solicitudes.
 Las solicitudes están asociadas a su dirección IP y se restablecerán cada minuto.
 
-● #Referencia de endpoints de API
+● **Referencia de endpoints de API:**
 Falta colocar ejemplos, descripción y pantalla de resultado.
 
 ## <br/>
