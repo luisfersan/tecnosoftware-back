@@ -2,7 +2,7 @@
 
 ## Presentación del Desafío
 
-![Pantalla VSCode](./public/img/pantallaReadme.png)
+![Pantalla VSCode](./database/presentacionPY.png)
 
 ## <br/>
 
@@ -82,7 +82,8 @@ Puede realizar hasta 100 solicitudes por minuto a cualquier punto de conexión. 
 Las solicitudes están asociadas a su dirección IP y se restablecerán cada minuto.
 
 ● **Referencia de endpoints de API:**
-Falta colocar ejemplos, descripción y pantalla de resultado.
+
+![Pantalla VSCode](./database/POST.png)
 
 ## <br/>
 
