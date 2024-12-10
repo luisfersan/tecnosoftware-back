@@ -78,13 +78,21 @@ Estos son los códigos de estado HTTP comunes utilizados por la API de TecnoSoft
 Consulte la sección Limitación de velocidad para obtener más información.
 
 ● **Limitación de Velocidad:**
+
 Puede realizar hasta 100 solicitudes por minuto a cualquier punto de conexión. Cualquier solicitud que exceda el límite de tasa recibirá una respuesta 429 Demasiadas solicitudes.
 Las solicitudes están asociadas a su dirección IP y se restablecerán cada minuto.
 
 ● **Referencia de endpoints de API:**
 
-![Pantalla VSCode](./database/POST.png)
+  **GET: Obtiene todos los registros de la tabla usuarios.** 
+  ![Pantalla VSCode](./database/GET.png)
 
+  **POST: Inicio de sesión con un usuario tipo Administrador y genración de Token satisfactoriamente.** 
+  ![Pantalla VSCode](./database/POST.png)
+
+ **POST: Creación de categoría.** 
+  ![Pantalla VSCode](./database/POST_Categorias.png)
+  
 ## <br/>
 
 ## Tecnologías Usadas 🛠️
