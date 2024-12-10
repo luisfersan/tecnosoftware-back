@@ -41,3 +41,6 @@ describe('Pruebas para rutas públicas', () => {
     expect(response.body.message).toBe('Producto no encontrado');
   });
 });
+
+
+//Fin test
