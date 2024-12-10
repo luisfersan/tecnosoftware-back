@@ -12,7 +12,7 @@ const {
 const getCategories = async (req, res) => {
   try {
     const category = await getAllCategories();
-    return apiResponse(res, 'success', 200, 'Categorías obtenidas con éxito', category.rows);
+    return apiResponse(res, 'success', 200, 'Categorías obtenidas con éxito', category);
   } catch (error) {
     return apiResponse(res, 'error', 500, 'Error al obtener categorías', { error: error.message });
   }
@@ -27,7 +27,8 @@ const newCategory = async (req, res) => {
 
   try {
     const category = await createCategory(name);
-    return apiResponse(res, 'success', 201, 'Categoría creada con éxito', category.rows[0]);
+
+    return apiResponse(res, 'success', 201, 'Categoría creada con éxito', category);
   } catch (error) {
     return apiResponse(res, 'error', 500, 'Error al crear la categoría', { error: error.message });
   }
@@ -48,7 +49,7 @@ const updateCategoryById = async (req, res) => {
       return apiResponse(res, 'error', 404, 'Categoría no encontrada', null);
     }
 
-    return apiResponse(res, 'success', 200, 'Categoría actualizada con éxito', category.rows[0]);
+    return apiResponse(res, 'success', 200, 'Categoría actualizada con éxito', category);
   } catch (error) {
     return apiResponse(res, 'error', 500, 'Error al actualizar la categoría', { error: error.message });
   }
@@ -65,7 +66,7 @@ const deleteCategoryById = async (req, res) => {
       return apiResponse(res, 'error', 404, 'Categoría no encontrada', null);
     }
 
-    return apiResponse(res, 'success', 200, 'Categoría eliminada con éxito', category.rows[0]);
+    return apiResponse(res, 'success', 200, 'Categoría eliminada con éxito', category);
   } catch (error) {
     return apiResponse(res, 'error', 500, 'Error al eliminar la categoría', { error: error.message });
   }

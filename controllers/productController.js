@@ -1,4 +1,3 @@
-const { apiResponse } = require('../helpers/response');
 const {
   getAllProducts,
   getProductById,
@@ -6,6 +5,7 @@ const {
   updateProduct,
   deleteProduct,
 } = require('../models/productModel');
+const apiResponse = require('../helpers/response');
 
 // Obtener todos los productos
 const getProducts = async (req, res) => {
@@ -38,7 +38,7 @@ const addProduct = async (req, res) => {
     const newProduct = await createProduct({ name, description, price, stock, category_id });
     apiResponse(res, 'success', 201, 'Producto creado con éxito', newProduct);
   } catch (error) {
-    apiResponse(res, 'error', 500, 'Error al crear el producto', { error: error.message });
+    apiResponse(res, 'error', 500, 'Error al crear el producto', error);
   }
 };
 
