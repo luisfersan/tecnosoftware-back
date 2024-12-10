@@ -11,11 +11,10 @@ app.use('/', routes);
 const isTestEnvironment = process.env.NODE_ENV === 'test';
 
 // Script para crear el administrador por defecto
-if (!isTestEnvironment) {
-  app.listen(3000, async () => {
-    console.log('Servidor iniciado en http://localhost:3000');
-    await initializeAdmin(); // Ejecuta la creación del administrador solo si no está en el entorno de pruebas
-  });
-}
+
+app.listen(3000, async () => {
+  console.log('Servidor iniciado en http://localhost:3000');
+  await initializeAdmin(); // Ejecuta la creación del administrador solo si no está en el entorno de pruebas
+});
 
 module.exports = app;
