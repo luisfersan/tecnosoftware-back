@@ -4,8 +4,13 @@ const {
   getOrderById,
   updateOrderStatus,
   deleteOrder,
+<<<<<<< HEAD
 } = require('../models/orderModel')
 const apiResponse = require('../helpers/response')
+=======
+} = require('../models/orderModel');
+const apiResponse = require('../helpers/response');
+>>>>>>> c69e7c5714bf667adefcd0e9c2004709054e4444
 
 // Crear una nueva orden
 const addOrder = async (req, res) => {

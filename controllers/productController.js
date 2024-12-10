@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 const { apiResponse } = require('../helpers/response')
+=======
+>>>>>>> c69e7c5714bf667adefcd0e9c2004709054e4444
 const {
   getAllProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+<<<<<<< HEAD
 } = require('../models/productModel')
+=======
+} = require('../models/productModel');
+const apiResponse = require('../helpers/response');
+>>>>>>> c69e7c5714bf667adefcd0e9c2004709054e4444
 
 // Obtener todos los productos
 const getProducts = async (req, res) => {
@@ -54,9 +62,13 @@ const addProduct = async (req, res) => {
       newProduct.rows[0]
     )
   } catch (error) {
+<<<<<<< HEAD
     apiResponse(res, 'error', 500, 'Error al crear el producto', {
       error: error.message,
     })
+=======
+    apiResponse(res, 'error', 500, 'Error al crear el producto', error);
+>>>>>>> c69e7c5714bf667adefcd0e9c2004709054e4444
   }
 }
 

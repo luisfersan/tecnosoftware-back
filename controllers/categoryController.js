@@ -1,33 +1,41 @@
 const { pool } = require('../config/config');
 const apiResponse = require('../helpers/response');
+const {
+  createCategory,
+  getAllCategories,
+  updateCategory,
+  deleteCategory,
+} = require('../models/categoryModel');
+
 
 // Obtener todas las categorías
 const getCategories = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM categories');
-    return apiResponse(res, 'success', 200, 'Categorías obtenidas con éxito', result.rows);
+    const category = await getAllCategories();
+    return apiResponse(res, 'success', 200, 'Categorías obtenidas con éxito', category);
   } catch (error) {
     return apiResponse(res, 'error', 500, 'Error al obtener categorías', { error: error.message });
   }
 };
 
 // Crear una categoría (admin)
-const createCategory = async (req, res) => {
+const newCategory = async (req, res) => {
   const { name } = req.body;
   if (!name) {
     return apiResponse(res, 'error', 400, 'Nombre de la categoría es obligatorio', null);
   }
 
   try {
-    const result = await pool.query('INSERT INTO categories (name) VALUES ($1) RETURNING *', [name]);
-    return apiResponse(res, 'success', 201, 'Categoría creada con éxito', result.rows[0]);
+    const category = await createCategory(name);
+
+    return apiResponse(res, 'success', 201, 'Categoría creada con éxito', category);
   } catch (error) {
     return apiResponse(res, 'error', 500, 'Error al crear la categoría', { error: error.message });
   }
 };
 
 // Modificar una categoría (admin)
-const updateCategory = async (req, res) => {
+const updateCategoryById = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
   if (!name) {
@@ -35,36 +43,33 @@ const updateCategory = async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
-      'UPDATE categories SET name = $1 WHERE id = $2 RETURNING *',
-      [name, id]
-    );
+    const category = await updateCategory(id, name);
 
-    if (result.rowCount === 0) {
+    if (category.rowCount === 0) {
       return apiResponse(res, 'error', 404, 'Categoría no encontrada', null);
     }
 
-    return apiResponse(res, 'success', 200, 'Categoría actualizada con éxito', result.rows[0]);
+    return apiResponse(res, 'success', 200, 'Categoría actualizada con éxito', category);
   } catch (error) {
     return apiResponse(res, 'error', 500, 'Error al actualizar la categoría', { error: error.message });
   }
 };
 
 // Eliminar una categoría (admin)
-const deleteCategory = async (req, res) => {
+const deleteCategoryById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query('DELETE FROM categories WHERE id = $1 RETURNING *', [id]);
+    const category = await deleteCategory(id);
 
-    if (result.rowCount === 0) {
+    if (category.rowCount === 0) {
       return apiResponse(res, 'error', 404, 'Categoría no encontrada', null);
     }
 
-    return apiResponse(res, 'success', 200, 'Categoría eliminada con éxito', result.rows[0]);
+    return apiResponse(res, 'success', 200, 'Categoría eliminada con éxito', category);
   } catch (error) {
     return apiResponse(res, 'error', 500, 'Error al eliminar la categoría', { error: error.message });
   }
 };
 
-module.exports = { getCategories, createCategory, updateCategory, deleteCategory };
+module.exports = { getCategories, newCategory, updateCategoryById, deleteCategoryById };
