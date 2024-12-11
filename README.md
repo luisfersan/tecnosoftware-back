@@ -87,12 +87,12 @@ Las solicitudes están asociadas a su dirección IP y se restablecerán cada min
   **GET: Obtiene todos los registros de la tabla usuarios.** 
   ![Pantalla VSCode](./database/GET.png)
 
-  **POST: Inicio de sesión con un usuario tipo Administrador y genración de Token satisfactoriamente.** 
+  **POST: Inicio de sesión con un usuario tipo Administrador y generación de Token satisfactoriamente.** 
   ![Pantalla VSCode](./database/POST.png)
 
  **POST: Creación de categoría.** 
   ![Pantalla VSCode](./database/POST_Categorias.png)
-  
+
 ## <br/>
 
 ## Tecnologías Usadas 🛠️
