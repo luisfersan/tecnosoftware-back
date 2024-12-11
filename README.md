@@ -92,7 +92,9 @@ Las solicitudes están asociadas a su dirección IP y se restablecerán cada min
 
  **POST: Creación de categoría.** 
   ![Pantalla VSCode](./database/POST_Categorias.png)
-  
+
+**Se evidencia en la BDD el registro de la categoría.**
+   ![Pantalla VSCode](./database/insertCategoria.png)
 ## <br/>
 
 ## Tecnologías Usadas 🛠️
