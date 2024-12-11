@@ -14,13 +14,13 @@ const apiResponse = require('../helpers/response');
 // Crear un nuevo usuario (registro)
 const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, username } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !username) {
       return apiResponse(res, 'error', 400, 'Faltan datos obligatorios', null);
     }
 
-    const newUser = await registerUser(email, password);
+    const newUser = await registerUser(email, password, username);
     apiResponse(res, 'success', 201, 'Usuario creado con éxito', { user: newUser });
   } catch (error) {
     apiResponse(res, 'error', 500, 'Error al registrar usuario', { error: error.message });
@@ -41,7 +41,7 @@ const login = async (req, res) => {
       return apiResponse(res, 'error', 401, 'Credenciales incorrectas', null);
     }
 
-    const token = jwt.sign({ email: user.email, admin: user.admin }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id, username: user.username, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
     apiResponse(res, 'success', 200, 'Inicio de sesión exitoso', { token });
   } catch (error) {
     apiResponse(res, 'error', 500, 'Error al iniciar sesión', { error: error.message });

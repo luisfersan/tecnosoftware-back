@@ -22,6 +22,7 @@ CREATE TABLE categories (
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
+  image TEXT NOT NULL,
   description TEXT NOT NULL,
   price NUMERIC(10, 2) NOT NULL CHECK (price >= 0.01),
   stock INTEGER NOT NULL CHECK (stock >= 0),

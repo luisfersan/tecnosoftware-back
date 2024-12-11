@@ -2,14 +2,14 @@ const { pool } = require('../config/config');
 const bcrypt = require('bcrypt');
 
 // Registrar un nuevo usuario
-const registerUser = async (email, password) => {
+const registerUser = async (email, password, username) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const query = `
-    INSERT INTO users (email, password, admin)
-    VALUES ($1, $2, $3)
-    RETURNING id, email, admin;
+    INSERT INTO users (email, password, username, admin)
+    VALUES ($1, $2, $3, $4)
+    RETURNING id, email, username;
   `;
-  const values = [email, hashedPassword, false]; // Admin por defecto es `false`
+  const values = [email, hashedPassword, username, false]; // Admin por defecto es `false`
   const result = await pool.query(query, values);
   return result.rows[0];
 };
