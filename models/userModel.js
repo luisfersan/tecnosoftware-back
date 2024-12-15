@@ -22,14 +22,14 @@ const getUserByEmail = async (email) => {
 
 // Obtener todos los usuarios
 const getAllUsers = async () => {
-  const query = `SELECT id, email, admin FROM users`;
+  const query = `SELECT id, username, email, admin FROM users`;
   const result = await pool.query(query);
   return result.rows;
 };
 
 // Obtener un usuario por ID
 const getUserById = async (id) => {
-  const query = `SELECT id, email, admin FROM users WHERE id = $1`;
+  const query = `SELECT id, username, email, admin FROM users WHERE id = $1`;
   const result = await pool.query(query, [id]);
   return result.rows[0];
 };

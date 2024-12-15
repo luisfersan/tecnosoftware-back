@@ -4,7 +4,8 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
-
+  getProductsByCategory,
+  getTopRatedProducts
 } = require('../models/productModel');
 const apiResponse = require('../helpers/response');
 
@@ -113,10 +114,40 @@ const removeProduct = async (req, res) => {
   }
 }
 
+const getProductsByCategoryController = async (req, res) => {
+  const { categoryName } = req.params; // Obtiene el nombre de la categoría de los parámetros de la URL
+  try {
+      const products = await getProductsByCategory(categoryName); // Llama a la función del modelo
+      if (products.length === 0) {
+          return res.status(404).json({ message: 'No se encontraron productos para esta categoría' });
+      }
+      res.status(200).json(products); // Devuelve los productos en la respuesta
+  } catch (error) {
+      console.error('Error al obtener productos:', error);
+      res.status(500).json({ message: 'Hubo un error al obtener los productos' }); // Error en el servidor
+  }
+};
+
+// Controlador para obtener productos mejor evaluados
+const getTopRatedProductsController = async (req, res) => {
+  try {
+      const topRatedProducts = await getTopRatedProducts(); // Llama a la función del modelo
+      if (topRatedProducts.length === 0) {
+          return res.status(404).json({ message: 'No se encontraron productos mejor evaluados' });
+      }
+      res.status(200).json(topRatedProducts); // Devuelve los productos mejor evaluados
+  } catch (error) {
+      console.error('Error al obtener productos mejor evaluados:', error);
+      res.status(500).json({ message: 'Hubo un error al obtener los productos mejor evaluados' });
+  }
+};
+
 module.exports = {
   getProducts,
   getProduct,
   addProduct,
   editProduct,
   removeProduct,
+  getProductsByCategoryController,
+  getTopRatedProductsController
 }

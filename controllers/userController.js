@@ -41,7 +41,7 @@ const login = async (req, res) => {
       return apiResponse(res, 'error', 401, 'Credenciales incorrectas', null);
     }
 
-    const token = jwt.sign({ id: user.id, username: user.username, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id, username: user.username, email: user.email, admin: user.admin }, JWT_SECRET, { expiresIn: '1h' });
     apiResponse(res, 'success', 200, 'Inicio de sesión exitoso', { token });
   } catch (error) {
     apiResponse(res, 'error', 500, 'Error al iniciar sesión', { error: error.message });
@@ -91,6 +91,19 @@ const getUser = async (req, res) => {
   }
 };
 
+// Obtener mi perfil
+
+const getMyProfile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const user = await getUserById(id);
+    apiResponse(res, 'success', 200, 'Perfil obtenido con éxito', { user });
+  } catch (error) {
+    apiResponse(res, 'error', 500, 'Error al obtener perfil', { error: error.message });
+  }
+};
+
+
 // Modificar un usuario por ID (solo admin)
 const updateUser = async (req, res) => {
   try {
@@ -138,5 +151,6 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
-  logout
+  logout,
+  getMyProfile
 };
