@@ -109,7 +109,7 @@ const initializeAdmin = async () => {
     const adminExists = await hasAdmin();
     if (!adminExists) {
       const adminEmail = process.env.ADMIN_EMAIL || 'admin@domain.com';
-      const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+      const adminPassword = process.env.ADMIN_PASSWORD || 'admin';
       await createAdminUser(adminEmail, adminPassword);
       console.log(`Administrador creado con éxito: ${adminEmail}`);
     } else {
