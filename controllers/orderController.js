@@ -7,13 +7,39 @@ const {
 
 } = require('../models/orderModel');
 const apiResponse = require('../helpers/response');
+const { getProductById } = require('../models/productModel');
 
 // Crear una nueva orden
 const addOrder = async (req, res) => {
   try {
-    const { user_id, products } = req.body
-    const newOrder = await createOrder(user_id, products)
-    return apiResponse(res, 'success', 201, 'Orden creada con éxito', newOrder)
+    const { user_id, products } = req.body;
+
+    if (!products || products.length === 0) {
+      return apiResponse(res, 'error', 400, 'No se enviaron productos en la orden', null);
+    }
+
+    const validatedProducts = [];
+    for (const product of products) {
+      const dbProduct = await getProductById(product.product_id);
+      if (!dbProduct || dbProduct.stock < product.quantity) {
+        return apiResponse(
+          res,
+          'error',
+          400,
+          `El producto con ID ${product.product_id} no está disponible o tiene stock insuficiente`,
+          null
+        );
+      }
+
+      validatedProducts.push({
+        product_id: product.product_id,
+        quantity: product.quantity,
+        price: dbProduct.price, // Añadimos el precio del producto en el momento de la compra
+      });
+    }
+
+    const newOrder = await createOrder(user_id, validatedProducts);
+    return apiResponse(res, 'success', 201, 'Orden creada con éxito', newOrder);
   } catch (error) {
     return apiResponse(
       res,
@@ -21,9 +47,11 @@ const addOrder = async (req, res) => {
       500,
       'Error al crear la orden',
       error.message
-    )
+    );
   }
-}
+};
+
+
 
 // Obtener todas las órdenes
 const getOrders = async (req, res) => {

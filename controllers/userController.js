@@ -107,17 +107,34 @@ const getMyProfile = async (req, res) => {
 // Modificar un usuario por ID (solo admin)
 const updateUser = async (req, res) => {
   try {
+    // Verificar si el usuario tiene permiso de administrador
     if (!req.user.admin) {
       return apiResponse(res, 'error', 403, 'Acceso no autorizado', null);
     }
 
     const { id } = req.params;
-    const updatedUser = await updateUserById(id, req.body);
 
+    // Obtener el usuario original
+    const originalUser = await getUserById(id); // Suponiendo que tienes esta función
+    if (!originalUser) {
+      return apiResponse(res, 'error', 404, 'Usuario no encontrado', null);
+    }
+
+    // Completar datos faltantes con los valores originales
+    const updatedData = {
+      name: req.body.name || originalUser.name,
+      email: req.body.email || originalUser.email,
+      password: req.body.password || originalUser.password, // Considerar cifrado si es necesario
+      admin: req.body.admin !== undefined ? req.body.admin : originalUser.admin, // Manejo de booleanos
+    };
+
+    // Actualizar al usuario
+    const updatedUser = await updateUserById(id, updatedData);
     if (!updatedUser) {
       return apiResponse(res, 'error', 404, 'Usuario no encontrado', null);
     }
 
+    // Respuesta exitosa
     apiResponse(res, 'success', 200, 'Usuario actualizado con éxito', { user: updatedUser });
   } catch (error) {
     apiResponse(res, 'error', 500, 'Error al actualizar usuario', { error: error.message });

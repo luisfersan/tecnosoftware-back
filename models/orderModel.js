@@ -1,27 +1,37 @@
 const { pool } = require('../config/config');
 
 // Crear una nueva orden
-const createOrder = async (userId, products) => {
+const createOrder = async (user_id, products) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    // Crear la orden
-    const orderQuery = 'INSERT INTO orders (user_id) VALUES ($1) RETURNING *';
-    const orderResult = await client.query(orderQuery, [userId]);
-    const order = orderResult.rows[0];
 
-    // Insertar los productos asociados
+    // Insertar la orden principal
+    const orderQuery = `
+      INSERT INTO orders (user_id, created_at)
+      VALUES ($1, NOW())
+      RETURNING id
+    `;
+    const orderResult = await client.query(orderQuery, [user_id]);
+    const orderId = orderResult.rows[0].id;
+
+    // Insertar los productos en la tabla order_product
     const orderProductQuery = `
-      INSERT INTO order_product (order_id, product_id, quantity, price) 
+      INSERT INTO order_product (order_id, product_id, quantity, price)
       VALUES ($1, $2, $3, $4)
     `;
+
     for (const product of products) {
-      const { product_id, quantity, price } = product;
-      await client.query(orderProductQuery, [order.id, product_id, quantity, price]);
+      await client.query(orderProductQuery, [
+        orderId,
+        product.product_id,
+        product.quantity,
+        product.price, // Insertamos el precio
+      ]);
     }
 
     await client.query('COMMIT');
-    return order;
+    return { order_id: orderId, products };
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;
@@ -29,6 +39,7 @@ const createOrder = async (userId, products) => {
     client.release();
   }
 };
+
 
 // Obtener todas las órdenes
 const getAllOrders = async () => {

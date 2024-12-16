@@ -5,7 +5,8 @@ const {
   updateProduct,
   deleteProduct,
   getProductsByCategory,
-  getTopRatedProducts
+  getTopRatedProducts,
+  purchasedProducts
 } = require('../models/productModel');
 const apiResponse = require('../helpers/response');
 
@@ -13,7 +14,7 @@ const apiResponse = require('../helpers/response');
 const getProducts = async (req, res) => {
   try {
     const products = await getAllProducts()
-    apiResponse(res, 'success', 200, 'Productos obtenidos con éxito', products)
+    apiResponse(res, 'success', 200, 'Productos obtenidos con éxito', {products})
   } catch (error) {
     apiResponse(res, 'error', 500, 'Error al obtener los productos', {
       error: error.message,
@@ -66,31 +67,40 @@ const addProduct = async (req, res) => {
 // Actualizar un producto
 const editProduct = async (req, res) => {
   try {
-    const { id } = req.params
-    const { name, description, price, stock, category_id } = req.body
-    const updatedProduct = await updateProduct(id, {
-      name,
-      description,
-      price,
-      stock,
-      category_id,
-    })
-    if (!updatedProduct) {
-      return apiResponse(res, 'error', 404, 'Producto no encontrado', null)
+    const { id } = req.params;
+    const { name, description, price, stock, category_id } = req.body;
+
+    // Recuperar el producto original
+    const originalProduct = await getProductById(id);
+    if (!originalProduct) {
+      return apiResponse(res, 'error', 404, 'Producto no encontrado', null);
     }
-    apiResponse(
-      res,
-      'success',
-      200,
-      'Producto actualizado con éxito',
-      updatedProduct
-    )
+
+    // Rellenar los datos faltantes con los valores originales
+    const updatedData = {
+      name: name || originalProduct.name,
+      description: description || originalProduct.description,
+      price: price !== undefined ? price : originalProduct.price, // Permite que el precio sea 0
+      stock: stock !== undefined ? stock : originalProduct.stock, // Permite que el stock sea 0
+      category_id: category_id || originalProduct.category_id,
+    };
+
+    // Actualizar el producto
+    const updatedProduct = await updateProduct(id, updatedData);
+    if (!updatedProduct) {
+      console.log('No encontrado');
+      return apiResponse(res, 'error', 404, 'Producto no encontrado', null);
+    }
+
+    // Respuesta exitosa
+    apiResponse(res, 'success', 200, 'Producto actualizado con éxito', updatedProduct);
   } catch (error) {
+    console.error(error.message);
     apiResponse(res, 'error', 500, 'Error al actualizar el producto', {
       error: error.message,
-    })
+    });
   }
-}
+};
 
 // Eliminar un producto
 const removeProduct = async (req, res) => {
@@ -142,6 +152,19 @@ const getTopRatedProductsController = async (req, res) => {
   }
 };
 
+const getpurchasedProducts = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(req.params);
+    const products = await purchasedProducts(id);
+    apiResponse(res, 'success', 200, 'Productos comprados con éxito', {products});
+  } catch (error) {
+    apiResponse(res, 'error', 500, 'Error al obtener los productos comprados', {
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProducts,
   getProduct,
@@ -149,5 +172,6 @@ module.exports = {
   editProduct,
   removeProduct,
   getProductsByCategoryController,
-  getTopRatedProductsController
+  getTopRatedProductsController,
+  getpurchasedProducts
 }

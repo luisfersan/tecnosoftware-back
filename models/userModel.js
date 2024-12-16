@@ -36,7 +36,7 @@ const getUserById = async (id) => {
 
 // Actualizar un usuario por ID
 const updateUserById = async (id, userData) => {
-  const { email, password, admin } = userData;
+  const { email, username, password, admin } = userData;
   const updates = [];
   const values = [];
   let query = `UPDATE users SET `;
@@ -44,6 +44,11 @@ const updateUserById = async (id, userData) => {
   if (email) {
     updates.push(`email = $${updates.length + 1}`);
     values.push(email);
+  }
+
+  if (username) {
+    updates.push(`username = $${updates.length + 1}`);
+    values.push(username);
   }
 
   if (password) {
