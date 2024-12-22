@@ -13,11 +13,11 @@ const getProductById = async (id) => {
 };
 
 // Crear un producto
-const createProduct = async ({ name, description, price, stock, category_id }) => {
+const createProduct = async ({ name, image, description, price, stock, category_id }) => {
   const query = `
-    INSERT INTO products (name, description, price, stock, category_id)
-    VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-  const values = [name, description, price, stock, category_id];
+    INSERT INTO products (name, image, description, price, stock, category_id)
+    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+  const values = [name, image, description, price, stock, category_id];
   const result = await pool.query(query, values);
   return result.rows[0];
 };

@@ -40,10 +40,12 @@ const getProduct = async (req, res) => {
 
 // Crear un nuevo producto
 const addProduct = async (req, res) => {
+  console.log(req.body)
   try {
-    const { name, description, price, stock, category_id } = req.body
+    const { name, image, description, price, stock, category_id } = req.body
     const newProduct = await createProduct({
       name,
+      image,
       description,
       price,
       stock,
@@ -54,9 +56,10 @@ const addProduct = async (req, res) => {
       'success',
       201,
       'Producto creado con éxito',
-      newProduct.rows[0]
+      newProduct.rows
     )
   } catch (error) {
+    console.log(error.message)
     apiResponse(res, 'error', 500, 'Error al crear el producto', {
       error: error.message,
     })
@@ -155,7 +158,6 @@ const getTopRatedProductsController = async (req, res) => {
 const getpurchasedProducts = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.params);
     const products = await purchasedProducts(id);
     apiResponse(res, 'success', 200, 'Productos comprados con éxito', {products});
   } catch (error) {
