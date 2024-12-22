@@ -13,11 +13,11 @@ const getProductById = async (id) => {
 };
 
 // Crear un producto
-const createProduct = async ({ name, description, price, stock, category_id }) => {
+const createProduct = async ({ name, image, description, price, stock, category_id }) => {
   const query = `
-    INSERT INTO products (name, description, price, stock, category_id)
-    VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-  const values = [name, description, price, stock, category_id];
+    INSERT INTO products (name, image, description, price, stock, category_id)
+    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+  const values = [name, image, description, price, stock, category_id];
   const result = await pool.query(query, values);
   return result.rows[0];
 };
@@ -58,11 +58,12 @@ const getProductsByCategory = async (categoryName) => {
   const values = [categoryName]; // Nombre de la categoría
 
   try {
-      const { rows } = await pool.query(query, values); // Ejecuta la consulta
-      return rows; // Devuelve los productos encontrados
+    const  result = await pool.query(query, values); // Ejecuta la consulta
+    console.log(result.rows, '<---- prueba')
+    return result.rows; // Devuelve los productos encontrados
   } catch (error) {
-      console.error('Error al obtener productos por categoría:', error);
-      throw error; // Lanza el error para manejarlo en el controlador
+    console.error('Error al obtener productos por categoría:', error);
+    throw error; // Lanza el error para manejarlo en el controlador
   }
 };
 
@@ -88,12 +89,45 @@ const getTopRatedProducts = async () => {
   `;
 
   try {
-      const { rows } = await pool.query(query); // Ejecuta la consulta
-      return rows; // Devuelve los productos mejor evaluados
+    const { rows } = await pool.query(query); // Ejecuta la consulta
+    return rows; // Devuelve los productos mejor evaluados
   } catch (error) {
-      console.error('Error al obtener productos mejor evaluados:', error);
-      throw error; // Lanza el error para manejarlo en el controlador
+    console.error('Error al obtener productos mejor evaluados:', error);
+    throw error; // Lanza el error para manejarlo en el controlador
   }
 };
 
-module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getTopRatedProducts};
+const purchasedProducts = async (id) => {
+  try {
+    const query = `
+SELECT
+    p.id AS product_id,
+    p.name AS product_name,
+    p.image AS product_image,
+    op.quantity AS quantity,
+    op.price AS unit_price,
+    (op.quantity * op.price) AS total_price,
+    o.created_at AS purchase_date
+FROM
+    orders o
+LEFT JOIN
+    order_product op ON o.id = op.order_id
+LEFT JOIN
+    products p ON op.product_id = p.id
+WHERE
+    o.user_id = $1
+    AND op.id IS NOT NULL
+    AND p.id IS NOT NULL
+ORDER BY
+    o.created_at DESC;
+
+  `;
+    const result = await pool.query(query, [id]);
+    return result.rows;
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+};
+
+module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getTopRatedProducts, purchasedProducts };
